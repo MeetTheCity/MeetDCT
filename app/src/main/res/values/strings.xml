@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">MeetTheCT</string>
     <string name="app_title">Meet DCT</string>
-    <string name="general_tab_text">General</string>
     <string name="lorem_ipsum">TEXTTEXTTEXT</string>
     <string name="title_main_screen">Let\'s travel the world!</string>
     <string name="sub_title_main_screen">Feeling adventures?</string>
@@ -11,10 +10,27 @@
 
 
     <!-- General Fragment -->
-    <string name="weather">How hot is it:</string>
-    <string name="time">What\'s the time:</string>
+    <string name="general_tab_text">General</string>
+    <string name="money_tab_text">Money</string>
+    <string name="transportation_tab_text">Transportation</string>
+    <string name="food_tab_text">Food</string>
+
+    <string name="weather">Weather</string>
+    <string name="time">What\'s the time?</string>
     <string name="language">Speak:</string>
     <string name="electricity">Quick! Charger:</string>
     <string name="celzius_sign">℃</string>
+    <string name="weather_hot">HOT!</string>
+    <string name="weather_warm">WARM!</string>
+    <string name="weather_cold">COLD!</string>
+    <!-- General Fragment -->
+
+    <array name="autosize_text_sizes">
+        <item>10sp</item>
+        <item>12sp</item>
+        <item>20sp</item>
+        <item>40sp</item>
+        <item>100sp</item>
+    </array>
 
 </resources>

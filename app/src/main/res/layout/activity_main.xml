@@ -52,8 +52,8 @@
                 android:layout_marginEnd="25dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="20dp"
-                app:cardElevation="8dp"
-                app:cardCornerRadius="22.5dp">
+                app:cardCornerRadius="22.5dp"
+                app:cardElevation="8dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -92,16 +92,16 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="25dp"
-                android:background="@color/darkGray"></FrameLayout>
+                android:background="@color/darkGray" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:text="@string/sub_title_main_screen"
@@ -122,15 +122,12 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="256dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@drawable/ic_launcher_foreground"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            android:paddingBottom="30dp"
             android:paddingEnd="@dimen/card_padding"
-            android:paddingLeft="@dimen/card_padding"
-            android:paddingRight="@dimen/card_padding"
             android:paddingStart="@dimen/card_padding" />
+
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +58,7 @@ public class CardFragment extends Fragment {
         cardView = view.findViewById(R.id.cardView);
         cardView.setMaxCardElevation(cardView.getCardElevation() * CardAdapter.MAX_ELEVATION_FACTOR);
 
-        TextView title = view.findViewById(R.id.title);
+        AppCompatTextView title = view.findViewById(R.id.title);
         ImageView favoriteButton = view.findViewById(R.id.favorite_button);
         ImageView likeButton = view.findViewById(R.id.like_button);
         ImageView commentsButton = view.findViewById(R.id.comments_button);

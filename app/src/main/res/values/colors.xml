@@ -7,7 +7,9 @@
     <color name="navigationBarColor">#000000</color>
     <color name="colorAccent">#c8e8ff</color>
     <color name="darkGray">#AAAAAA</color>
-    <color name="black_alpha">#22000000</color>
-    <color name="white_text_color">#FFFFFF</color>
+    <color name="whiteTextColor">#FFFFFF</color>
+    <color name="weatherColorHot">#EA155B</color>
+    <color name="weatherColorWarm">#EAC215</color>
+    <color name="weatherColorCold">#1585EA</color>
 
 </resources>

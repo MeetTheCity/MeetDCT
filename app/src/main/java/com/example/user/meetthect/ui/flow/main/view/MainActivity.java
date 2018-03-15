@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 
+import com.airbnb.lottie.LottieComposition;
 import com.example.user.meetthect.R;
 import com.example.user.meetthect.base.BaseActivity;
 import com.example.user.meetthect.data.model.City;
@@ -30,6 +31,7 @@ public class MainActivity extends BaseActivity implements CardFragment.CardFragm
 
     private ArrayList<City> cities;
     private ArrayList<String> citiesNames;
+    private AutoCompleteTextView mSearchAutoComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,11 @@ public class MainActivity extends BaseActivity implements CardFragment.CardFragm
             citiesNames.add(city.getCityName());
         }
 
-        AutoCompleteTextView searchAutoComplete = findViewById(R.id.search_auto_complete);
+        mSearchAutoComplete = findViewById(R.id.search_auto_complete);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, citiesNames);
-        searchAutoComplete.setAdapter(adapter);
-        searchAutoComplete.setOnItemClickListener(new OnSearchAutoCompleteCitySelected());
+        mSearchAutoComplete.setAdapter(adapter);
+        mSearchAutoComplete.setOnItemClickListener(new OnSearchAutoCompleteCitySelected());
 
         CardFragmentPagerAdapter pagerAdapter = new CardFragmentPagerAdapter(getSupportFragmentManager(), dpToPixels(2, this), cities);
         ShadowTransformer fragmentCardShadowTransformer = new ShadowTransformer(citiesViewPager, pagerAdapter);
@@ -92,7 +94,17 @@ public class MainActivity extends BaseActivity implements CardFragment.CardFragm
     private class OnSearchButtonClicked implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            String selectedCityName = mSearchAutoComplete.getText().toString();
+            findSearchedCity(selectedCityName);
+        }
+    }
 
+    private void findSearchedCity(String selectedCityName) {
+        for (int i = 0; i < citiesNames.size(); i++) {
+            if (citiesNames.get(i).equals(selectedCityName)) {
+                onCityClicked(cities.get(i));
+                break;
+            }
         }
     }
 
@@ -107,12 +119,7 @@ public class MainActivity extends BaseActivity implements CardFragment.CardFragm
         @Override
         public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
             String selectedCityName = ((AppCompatTextView) arg1).getText().toString();
-            for (int i = 0; i < citiesNames.size(); i++) {
-                if (citiesNames.get(i).equals(selectedCityName)) {
-                    onCityClicked(cities.get(i));
-                    break;
-                }
-            }
+            findSearchedCity(selectedCityName);
         }
     }
 }
