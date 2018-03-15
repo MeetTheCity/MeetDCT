@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">MeetTheCT</string>
+    <string name="app_title">Meet DCT</string>
+    <string name="general_tab_text">General</string>
+    <string name="lorem_ipsum">TEXTTEXTTEXT</string>
+    <string name="title_main_screen">Let\'s travel the world!</string>
+    <string name="sub_title_main_screen">Feeling adventures?</string>
+    <string name="sub_title2_main_screen">Pack your bags and start travel:</string>
+    <string name="OPEN_WEATHER_MAP_API_KEY">adbf2fe31977086e33809ca77096d296</string>
+
+
+
+    <!-- General Fragment -->
+    <string name="weather">How hot is it:</string>
+    <string name="time">What\'s the time:</string>
+    <string name="language">Speak:</string>
+    <string name="electricity">Quick! Charger:</string>
+    <string name="celzius_sign">℃</string>
+
+</resources>
