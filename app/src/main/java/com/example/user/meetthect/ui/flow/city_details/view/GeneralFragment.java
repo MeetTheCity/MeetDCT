@@ -13,13 +13,16 @@ import com.example.user.meetthect.Injector;
 import com.example.user.meetthect.R;
 import com.example.user.meetthect.data.model.City;
 import com.example.user.meetthect.data.model.ConvertedCurrency;
+import com.example.user.meetthect.data.model.CountriesElectricity;
 import com.example.user.meetthect.data.model.CurrencyCode;
 import com.example.user.meetthect.data.network.CountriesCodeService;
 import com.example.user.meetthect.data.network.CurrencyService;
+import com.example.user.meetthect.utils.FileProcessingUtils;
 import com.kwabenaberko.openweathermaplib.Units;
 import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
 import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,6 +47,8 @@ public class GeneralFragment extends Fragment {
     private ImageView ivLanguageIcon;
     private TextView txLanguageValue;
     private TextView tvCurrencyValue;
+    private ArrayList<CountriesElectricity> countriesElectricities;
+    private TextView tvOutletValue;
 
     public static GeneralFragment newInstance(City city) {
         GeneralFragment generalFragment = new GeneralFragment();
@@ -89,6 +94,7 @@ public class GeneralFragment extends Fragment {
         txLanguageValue = view.findViewById(R.id.language_value);
         ivLanguageIcon = view.findViewById(R.id.language_icon);
         tvCurrencyValue = view.findViewById(R.id.currency_value);
+        tvOutletValue = view.findViewById(R.id.outlet_value);
 
         if (mCity != null) {
             cityTitle.setText(mCity.getCityName());
@@ -168,9 +174,9 @@ public class GeneralFragment extends Fragment {
                 rate = String.valueOf(rates.getILS());
 
                 break;
-                default:
-                    rate = String.valueOf(rates.getUSD());
-                    break;
+            default:
+                rate = String.valueOf(rates.getUSD());
+                break;
 
         }
         return rate;
@@ -181,7 +187,19 @@ public class GeneralFragment extends Fragment {
     }
 
     private void getElectricityInfo() {
+        countriesElectricities = getCountryElectricity();
+        for (CountriesElectricity countriesElectricity : countriesElectricities) {
+            if (mCity.getCountry().equals(countriesElectricity.getCountryName())) {
+                tvOutletValue.setText(countriesElectricity.getVoltage() + " " + countriesElectricity.getPlug().replace(" V", "V"));
+                break;
+            }
+        }
+    }
 
+    private ArrayList<CountriesElectricity> getCountryElectricity() {
+        FileProcessingUtils fileProcessingUtils = new FileProcessingUtils(getActivity());
+        List<CountriesElectricity> countriesElectricities = fileProcessingUtils.parseSocketAndVoltageByCountry();
+        return new ArrayList<>(countriesElectricities);
     }
 
     private void getLanguageInfo() {

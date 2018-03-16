@@ -30,7 +30,7 @@ import java.util.List;
 public class CityActivity extends BaseActivity implements RestaurantsFragment.RestaurantsFragmentListener{
 
     public static final String CITY = "city";
-    public static final int NAVIGATOR_FRAGMENT_POSITION = 5;
+    public static final int NAVIGATOR_FRAGMENT_POSITION = 4;
 
     private Toolbar mToolbar;
     private TabLayout mTabLayout;

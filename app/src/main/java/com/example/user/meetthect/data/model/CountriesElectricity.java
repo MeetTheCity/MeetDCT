@@ -46,16 +46,7 @@ public class CountriesElectricity implements Parcelable {
         setCountryName(builder.countryName);
         setVoltage(builder.voltage);
         setPlug(builder.plug);
-    }
-
-    @Override
-    public String toString() {
-        return "Country{" +
-                "id='" + id + '\'' +
-                ", countryName='" + countryName + '\'' +
-                ", voltage=" + voltage +
-                ", plug=" + plug +
-                '}';
+        setId(builder.id);
     }
 
     public static ICountryName builder() {
@@ -94,56 +85,7 @@ public class CountriesElectricity implements Parcelable {
         this.plug = plug;
     }
 
-    public interface IBuild {
 
-        CountriesElectricity build();
-    }
-
-    public interface IPlug {
-        IBuild withPlug(String val);
-    }
-
-    public interface IVoltage {
-        IPlug withVoltage(String val);
-    }
-
-    public interface ICountryName {
-        IVoltage withCountyName(String val);
-    }
-
-    public static final class Builder implements IPlug, IVoltage, ICountryName, IBuild {
-        private String id;
-        private String plug;
-        private String voltage;
-        private String countryName;
-
-        private Builder() {
-        }
-
-        @Override
-        public IBuild withPlug(String val) {
-            plug = val;
-            return this;
-        }
-
-        @Override
-        public IPlug withVoltage(String val) {
-            voltage = val;
-            return this;
-        }
-
-        @Override
-        public IVoltage withCountyName(String val) {
-            countryName = val;
-            return this;
-        }
-
-        @Override
-        public CountriesElectricity build() {
-            id = countryName + plug;
-            return new CountriesElectricity(this);
-        }
-    }
 
 
     @Override
@@ -177,6 +119,62 @@ public class CountriesElectricity implements Parcelable {
             return new CountriesElectricity[size];
         }
     };
+
+    public interface IBuild {
+        IBuild withId(String val);
+
+        CountriesElectricity build();
+    }
+
+    public interface IPlug {
+        IBuild withPlug(String val);
+    }
+
+    public interface IVoltage {
+        IPlug withVoltage(String val);
+    }
+
+    public interface ICountryName {
+        IVoltage withCountryName(String val);
+    }
+
+    public static final class Builder implements IPlug, IVoltage, ICountryName, IBuild {
+        private String id;
+        private String plug;
+        private String voltage;
+        private String countryName;
+
+        private Builder() {
+        }
+
+        @Override
+        public IBuild withPlug(String val) {
+            plug = val;
+            return this;
+        }
+
+        @Override
+        public IPlug withVoltage(String val) {
+            voltage = val;
+            return this;
+        }
+
+        @Override
+        public IVoltage withCountryName(String val) {
+            countryName = val;
+            return this;
+        }
+
+        @Override
+        public IBuild withId(String val) {
+            id = val;
+            return this;
+        }
+
+        public CountriesElectricity build() {
+            return new CountriesElectricity(this);
+        }
+    }
 }
 
 

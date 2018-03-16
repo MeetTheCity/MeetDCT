@@ -57,32 +57,33 @@ public class FileProcessingUtils {
         }
     }
 
-//    @SuppressLint("TimberArgCount")
-//    public List<CountriesElectricity> parseSocketAndVoltageByCountry() {
-//        Timber.v("Parsing cities SocketAndVoltageByCountry");
-//        List<CountriesElectricity> list = new ArrayList<>();
-//        try {
-//            CSVReader reader = new CSVReader(
-//                    new InputStreamReader(mContext.getAssets().open("socket_and_voltage_by_country.csv")));
-//            for (; ; ) {
-//                String[] next = reader.readNext();
+    @SuppressLint("TimberArgCount")
+    public List<CountriesElectricity> parseSocketAndVoltageByCountry() {
+        Timber.v("Parsing cities SocketAndVoltageByCountry");
+        List<CountriesElectricity> list = new ArrayList<>();
+        try {
+            CSVReader reader = new CSVReader(
+                    new InputStreamReader(mContext.getAssets().open("socket_and_voltage_by_country.csv")));
+            for (; ; ) {
+                String[] next = reader.readNext();
+
+                if (next != null) {
+                    CountriesElectricity countriesElectricity = CountriesElectricity.builder().
+                            withCountryName(next[0]).
+                            withVoltage(next[2]).
+                            withPlug(next[3]).
+                            build();
 //
-//                if (next != null) {
-//                    CountriesElectricity countriesElectricity = CountriesElectricity.Builder()
-//                                    .withCountryName(next[0])
-//                                    .withVoltage(next[2])
-//                                    .withPlug[3]
-//                                    .build();
-//                    list.add(countriesElectricity);
-//                } else {
-//                    break;
-//                }
-//            }
-//
-//            return list;
-//        } catch (IOException e) {
-//            Timber.e("Failed to parse Cities CSV file ", e);
-//            return Collections.emptyList();
-//        }
-//    }
+                    list.add(countriesElectricity);
+                } else {
+                    break;
+                }
+            }
+
+            return list;
+        } catch (IOException e) {
+            Timber.e("Failed to parse Cities CSV file ", e);
+            return Collections.emptyList();
+        }
+    }
 }

@@ -18,6 +18,7 @@ import com.example.user.meetthect.data.model.City;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
@@ -34,17 +35,24 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * Created by User on 3/16/2018.
  */
 
-public class NavigatorFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class NavigatorFragment extends SupportMapFragment implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    public static final String CITY = "city";
     private GoogleMap mMap;
     private GoogleApiClient client;
     private LocationRequest locationRequest;
     private Location lastLocation;
     private Marker currentLocationMarker;
     private double latitude, longitude;
+    private City mCity;
 
-    public static NavigatorFragment newInstance(City mCity) {
+    public static NavigatorFragment newInstance(City city) {
         NavigatorFragment navigatorFragment = new NavigatorFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(CITY, city);
+        navigatorFragment.setArguments(bundle);
 
         return navigatorFragment;
     }
@@ -56,15 +64,10 @@ public class NavigatorFragment extends SupportMapFragment implements OnMapReadyC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_transportation, container, false);
-
-        this.getMapAsync(this);
-        return view;
+        if (getArguments() != null) {
+            mCity = getArguments().getParcelable(CITY);
+        }
     }
 
     @Override
@@ -74,6 +77,9 @@ public class NavigatorFragment extends SupportMapFragment implements OnMapReadyC
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
+
+            mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(mCity.getLat(),mCity.getLon()) , 14.0f) );
+
         }
     }
 
@@ -108,34 +114,34 @@ public class NavigatorFragment extends SupportMapFragment implements OnMapReadyC
 
     }
 
-//    @Override
-//    public void onLocationChanged(Location location) {
-//        latitude = location.getLatitude();
-//        longitude = location.getLongitude();
-//
-//        lastLocation = location;
-//        if (currentLocationMarker != null) {
-//            currentLocationMarker.remove();
-//        }
-//
-//        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-//
-//        MarkerOptions markerOptions = new MarkerOptions();
-//        markerOptions.position(latLng).title("Current Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-//
-//        currentLocationMarker = mMap.addMarker(markerOptions);
-//
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-//        mMap.animateCamera(CameraUpdateFactory.zoomBy(5));
-//
-//        if (client != null) {
-//            LocationCallback locationCallback = new LocationCallback() {
-//                @Override
-//                public void onLocationResult(LocationResult locationResult) {
-//                    super.onLocationResult(locationResult);
-//                }
-//            };
-//            LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback);
-//        }
-//    }
+    @Override
+    public void onLocationChanged(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+
+        lastLocation = location;
+        if (currentLocationMarker != null) {
+            currentLocationMarker.remove();
+        }
+
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng).title("Current Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
+        currentLocationMarker = mMap.addMarker(markerOptions);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomBy(5));
+
+        if (client != null) {
+            LocationCallback locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    super.onLocationResult(locationResult);
+                }
+            };
+            LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(locationCallback);
+        }
+    }
 }

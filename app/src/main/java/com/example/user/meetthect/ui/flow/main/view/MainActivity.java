@@ -38,6 +38,8 @@ public class MainActivity extends BaseActivity implements CardFragment.CardFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        
+
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
