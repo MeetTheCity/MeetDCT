@@ -155,7 +155,6 @@ public class City implements Parcelable {
     }
 
     public static final class Builder implements IIso2, ICountry, ILon, ILat, ICityName, IBuild {
-
         private String id;
         private String iso2;
         private String country;

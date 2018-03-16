@@ -11,18 +11,22 @@
 
     <!-- General Fragment -->
     <string name="general_tab_text">General</string>
-    <string name="money_tab_text">Money</string>
-    <string name="transportation_tab_text">Transportation</string>
-    <string name="food_tab_text">Food</string>
+    <string name="speak_tab_text">Speak</string>
+    <string name="eat_tab_text">Eat</string>
+    <string name="see_tab_text">See</string>
+    <string name="move_tab_text">Move</string>
 
     <string name="weather">Weather</string>
-    <string name="time">What\'s the time?</string>
+    <string name="currency">Money:</string>
     <string name="language">Speak:</string>
     <string name="electricity">Quick! Charger:</string>
     <string name="celzius_sign">℃</string>
     <string name="weather_hot">HOT!</string>
     <string name="weather_warm">WARM!</string>
     <string name="weather_cold">COLD!</string>
+    <string name="restaurant_fragment_feeling_hungry">Feeling Hungry?</string>
+    <string name="restaurant_fragment_best_food_in_your_area">Best food in your area</string>
+    <string name="restaurant_go_there">Go there</string>
     <!-- General Fragment -->
 
     <array name="autosize_text_sizes">

@@ -61,4 +61,8 @@ dependencies {
     compile 'net.danlew:android.joda:2.9.9.2'
 
 
+    //Maps
+    implementation 'com.google.android.gms:play-services-maps:11.8.0'
+    implementation 'com.google.android.gms:play-services-location:11.8.0'
+
 }

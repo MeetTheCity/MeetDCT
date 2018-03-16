@@ -22,11 +22,11 @@ import com.example.user.meetthect.ui.flow.money.presenter.MoneyPresenter;
  * Created by User on 3/13/2018.
  */
 
-public class MoneyFragment extends BaseFragment implements MoneyContract.View {
-    public static MoneyFragment newInstance(City mCity) {
-        MoneyFragment moneyFragment = new MoneyFragment();
+public class SpeakFragment extends BaseFragment implements MoneyContract.View {
+    public static SpeakFragment newInstance(City mCity) {
+        SpeakFragment speakFragment = new SpeakFragment();
 
-        return moneyFragment;
+        return speakFragment;
     }
 
     private MoneyPresenter mMoneyPresenter;
@@ -36,7 +36,7 @@ public class MoneyFragment extends BaseFragment implements MoneyContract.View {
     private TextView baseCoin;
     private TextView convertedCoin;
 
-    public MoneyFragment() {
+    public SpeakFragment() {
         // Required empty public constructor
     }
 

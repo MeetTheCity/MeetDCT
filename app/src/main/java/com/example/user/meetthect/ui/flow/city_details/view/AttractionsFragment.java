@@ -13,14 +13,14 @@ import com.example.user.meetthect.data.model.City;
  * Created by User on 3/13/2018.
  */
 
-public class TransportationFragment extends Fragment {
-    public static TransportationFragment newInstance(City mCity) {
-        TransportationFragment transportationFragment = new TransportationFragment();
+public class AttractionsFragment extends Fragment {
+    public static AttractionsFragment newInstance(City mCity) {
+        AttractionsFragment attractionsFragment = new AttractionsFragment();
 
-        return transportationFragment;
+        return attractionsFragment;
     }
 
-    public TransportationFragment() {
+    public AttractionsFragment() {
         // Required empty public constructor
     }
 

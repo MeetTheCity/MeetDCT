@@ -12,16 +12,14 @@ import android.widget.ViewFlipper;
 import com.example.user.meetthect.Injector;
 import com.example.user.meetthect.R;
 import com.example.user.meetthect.data.model.City;
+import com.example.user.meetthect.data.model.ConvertedCurrency;
 import com.example.user.meetthect.data.model.CurrencyCode;
 import com.example.user.meetthect.data.network.CountriesCodeService;
+import com.example.user.meetthect.data.network.CurrencyService;
 import com.kwabenaberko.openweathermaplib.Units;
 import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
 import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,7 +43,7 @@ public class GeneralFragment extends Fragment {
     private ImageView ivWeather;
     private ImageView ivLanguageIcon;
     private TextView txLanguageValue;
-    private TextView tvTimeValue;
+    private TextView tvCurrencyValue;
 
     public static GeneralFragment newInstance(City city) {
         GeneralFragment generalFragment = new GeneralFragment();
@@ -90,17 +88,92 @@ public class GeneralFragment extends Fragment {
         ivWeather = view.findViewById(R.id.weather_icon);
         txLanguageValue = view.findViewById(R.id.language_value);
         ivLanguageIcon = view.findViewById(R.id.language_icon);
-        tvTimeValue = view.findViewById(R.id.time_value);
+        tvCurrencyValue = view.findViewById(R.id.currency_value);
 
         if (mCity != null) {
             cityTitle.setText(mCity.getCityName());
             getWeatherInfo();
-            getLanguageInfoAndTime();
+            getLanguageInfo();
             getElectricityInfo();
+            getCurrencyInfo();
             getTimeInfo();
         }
 
         return view;
+    }
+
+    private void getCurrencyInfo() {
+        CountriesCodeService countriesCodeService = Injector.getInstance().getCountriesCodeService();
+        String countryCode = mCity.getIso2();
+        countriesCodeService.getResponse(countryCode).enqueue(new Callback<List<CurrencyCode>>() {
+            @Override
+            public void onResponse(Call<List<CurrencyCode>> call, final Response<List<CurrencyCode>> currencyCodeResponse) {
+                String currencyCode = currencyCodeResponse.body().get(0).getCurrencies().get(0).getCode();
+                CurrencyService currencyService = Injector.getInstance().getCurrencyService();
+                currencyService.getResponse("USD").enqueue(new Callback<ConvertedCurrency>() {
+                    @Override
+                    public void onResponse(Call<ConvertedCurrency> call, Response<ConvertedCurrency> convertedCurrencyResponse) {
+                        CurrencyCode currencyCode = currencyCodeResponse.body().get(0);
+                        ConvertedCurrency convertedCurrency = convertedCurrencyResponse.body();
+
+                        String currencyCodeString = currencyCode.getCurrencies().get(0).getCode();
+                        String converetedCurrency = getConveretedCurrency(convertedCurrency.getRates(), currencyCodeString);
+                        tvCurrencyValue.setText("1" + "USD" + " = " + converetedCurrency + currencyCodeString);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ConvertedCurrency> call, Throwable t) {
+                        Timber.e(CityActivity.class.getName(), t.getMessage());
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<List<CurrencyCode>> call, Throwable t) {
+                Timber.e(CityActivity.class.getName(), t.getMessage());
+            }
+        });
+        CurrencyService currencyService = Injector.getInstance().getCurrencyService();
+    }
+
+    private String getConveretedCurrency(ConvertedCurrency.Rates rates, String currencyCodeString) {
+        String rate = "";
+        switch (currencyCodeString) {
+            case "AUD":
+                rate = String.valueOf(rates.getAUD());
+                break;
+            case "BRL":
+                rate = String.valueOf(rates.getBRL());
+
+                break;
+            case "CAD":
+                rate = String.valueOf(rates.getCAD());
+
+                break;
+            case "CNY":
+                rate = String.valueOf(rates.getCNY());
+
+                break;
+            case "GBP":
+                rate = String.valueOf(rates.getGBP());
+
+                break;
+            case "EUR":
+                rate = String.valueOf(rates.getEUR());
+
+                break;
+            case "ILS":
+                rate = String.valueOf(rates.getILS());
+
+                break;
+                default:
+                    rate = String.valueOf(rates.getUSD());
+                    break;
+
+        }
+        return rate;
     }
 
     private void getTimeInfo() {
@@ -111,12 +184,12 @@ public class GeneralFragment extends Fragment {
 
     }
 
-    private void getLanguageInfoAndTime() {
+    private void getLanguageInfo() {
         CountriesCodeService countriesCodeService = Injector.getInstance().getCountriesCodeService();
         countriesCodeService.getResponse(mCity.getIso2()).enqueue(new Callback<List<CurrencyCode>>() {
             @Override
             public void onResponse(Call<List<CurrencyCode>> call, final Response<List<CurrencyCode>> currencyCodeResponse) {
-                String language = currencyCodeResponse.body().get(0).getDemonym();
+                String language = currencyCodeResponse.body().get(0).getLanguages().get(0).getName();
                 txLanguageValue.setText(language);
 
 //                Glide.with(getActivity())
@@ -127,13 +200,6 @@ public class GeneralFragment extends Fragment {
 
                 String region = currencyCodeResponse.body().get(0).getRegion();
                 String capital = currencyCodeResponse.body().get(0).getCapital();
-                DateTime dt = new DateTime();
-                DateTime dtForCity = dt.withZone(DateTimeZone.forID(region + "/" + capital));
-
-                SimpleDateFormat fmt = new SimpleDateFormat("hh:mm");
-                fmt.format(dtForCity);
-
-                tvTimeValue.setText("");
 
                 showLoading(false);
             }
@@ -161,17 +227,24 @@ public class GeneralFragment extends Fragment {
         helper.getCurrentWeatherByCityName(mCity.getCityName(), new OpenWeatherMapHelper.CurrentWeatherCallback() {
             @Override
             public void onSuccess(CurrentWeather currentWeather) {
-                double temp = currentWeather.getMain().getTemp();
-                if (temp < 12) {
-                    txWeatherValue.setTextColor(getResources().getColor(R.color.weatherColorCold));
-                    txWeatherValue.setText(temp + getString(R.string.celzius_sign) + " " + getString(R.string.weather_cold));
-                } else if (temp >= 12 && temp <= 21) {
-                    txWeatherValue.setTextColor(getResources().getColor(R.color.weatherColorWarm));
-                    txWeatherValue.setText(temp + getString(R.string.celzius_sign) + " " + getString(R.string.weather_warm));
+                if (isAdded()) {
+                    double excatTemp = currentWeather.getMain().getTemp();
+                    int temp = (int) Math.round(excatTemp);
 
-                } else if (temp > 21) {
-                    txWeatherValue.setTextColor(getResources().getColor(R.color.weatherColorHot));
-                    txWeatherValue.setText(temp + getString(R.string.celzius_sign) + " " + getString(R.string.weather_hot));
+                    if (temp < 12) {
+                        txWeatherValue.setTextColor(getResources().getColor(R.color.weatherColorCold));
+                        txWeatherValue.setText(temp + getString(R.string.celzius_sign) + " " + getString(R.string.weather_cold));
+                        ivWeather.setImageDrawable(getResources().getDrawable(R.drawable.city_inside_weather_cold));
+                    } else if (temp >= 12 && temp <= 21) {
+                        txWeatherValue.setTextColor(getResources().getColor(R.color.weatherColorWarm));
+                        txWeatherValue.setText(temp + getString(R.string.celzius_sign) + " " + getString(R.string.weather_warm));
+                        ivWeather.setImageDrawable(getResources().getDrawable(R.drawable.city_inside_weather_mid));
+
+                    } else if (temp > 21) {
+                        txWeatherValue.setTextColor(getResources().getColor(R.color.weatherColorHot));
+                        txWeatherValue.setText(temp + getString(R.string.celzius_sign) + " " + getString(R.string.weather_hot));
+                        ivWeather.setImageDrawable(getResources().getDrawable(R.drawable.city_inside_weather_hot));
+                    }
                 }
             }
 

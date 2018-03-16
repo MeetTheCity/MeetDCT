@@ -140,6 +140,9 @@ public class ConvertedCurrency {
         @SerializedName("ZAR")
         @Expose
         private Double zAR;
+        @SerializedName("EUR")
+        @Expose
+        private Double eUR;
 
         public Double getAUD() {
             return aUD;
@@ -395,6 +398,14 @@ public class ConvertedCurrency {
 
         public void setZAR(Double zAR) {
             this.zAR = zAR;
+        }
+
+        public Double getEUR() {
+            return eUR;
+        }
+
+        public void setEUR(Double eUR) {
+            this.eUR = eUR;
         }
     }
 }

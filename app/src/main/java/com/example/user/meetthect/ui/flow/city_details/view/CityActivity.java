@@ -12,22 +12,25 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.user.meetthect.R;
 import com.example.user.meetthect.base.BaseActivity;
 import com.example.user.meetthect.data.model.City;
-import com.example.user.meetthect.ui.flow.money.view.MoneyFragment;
+import com.example.user.meetthect.ui.flow.money.view.SpeakFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by User on 3/13/2018.
  */
 
-public class CityActivity extends BaseActivity {
+public class CityActivity extends BaseActivity implements RestaurantsFragment.RestaurantsFragmentListener{
 
     public static final String CITY = "city";
+    public static final int NAVIGATOR_FRAGMENT_POSITION = 5;
 
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
@@ -53,9 +56,12 @@ public class CityActivity extends BaseActivity {
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        TextView title = mToolbar.findViewById(R.id.city_title);
+        title.setText(mCity.getCityName());
 
         ActionBar supportActionBar = getSupportActionBar();
-        supportActionBar.setDisplayHomeAsUpEnabled(true);
 
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -100,10 +106,17 @@ public class CityActivity extends BaseActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(GeneralFragment.newInstance(mCity));
-        adapter.addFragment(MoneyFragment.newInstance(mCity));
-        adapter.addFragment(TransportationFragment.newInstance(mCity));
+        adapter.addFragment(SpeakFragment.newInstance(mCity));
         adapter.addFragment(RestaurantsFragment.newInstance(mCity));
+        adapter.addFragment(AttractionsFragment.newInstance(mCity));
+        adapter.addFragment(NavigatorFragment.newInstance(mCity));
+
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void GoToTransportationFragment(HashMap<String, String> restaurantInfoHashMap) {
+        mViewPager.setCurrentItem(NAVIGATOR_FRAGMENT_POSITION);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

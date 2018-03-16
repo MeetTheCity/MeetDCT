@@ -11,5 +11,7 @@
     <color name="weatherColorHot">#EA155B</color>
     <color name="weatherColorWarm">#EAC215</color>
     <color name="weatherColorCold">#1585EA</color>
+    <color name="darkTextColor">#2c343a</color>
+    <color name="lightTextColor">#5c6063</color>
 
 </resources>

@@ -70,6 +70,7 @@ public class MainActivity extends BaseActivity implements CardFragment.CardFragm
         citiesViewPager.setAdapter(pagerAdapter);
         citiesViewPager.setPageTransformer(false, fragmentCardShadowTransformer);
         citiesViewPager.setOffscreenPageLimit(3);
+
     }
 
     @NonNull
