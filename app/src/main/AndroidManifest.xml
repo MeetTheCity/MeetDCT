@@ -24,7 +24,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.flow.main.view.MainActivity"
+            android:name=".ui.flow.splash.SplashActivity"
             android:configChanges="orientation"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait">
@@ -37,6 +37,8 @@
         <activity
             android:name=".ui.flow.city_details.view.CityActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.flow.main.view.MainActivity"/>
     </application>
 
 </manifest>

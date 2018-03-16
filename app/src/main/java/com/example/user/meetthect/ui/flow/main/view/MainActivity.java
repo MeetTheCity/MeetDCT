@@ -1,5 +1,6 @@
 package com.example.user.meetthect.ui.flow.main.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -27,11 +28,14 @@ import java.util.List;
 import static com.example.user.meetthect.ui.flow.main.view.CardFragment.CITY;
 
 public class MainActivity extends BaseActivity implements CardFragment.CardFragmentListener {
+    public static final String CITY_NAME = "cityName";
     private Toolbar mToolbar;
 
     private ArrayList<City> cities;
     private ArrayList<String> citiesNames;
     private AutoCompleteTextView mSearchAutoComplete;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,12 @@ public class MainActivity extends BaseActivity implements CardFragment.CardFragm
         return dp * (context.getResources().getDisplayMetrics().density);
     }
 
+    public static <T extends Activity> Intent getIntent(T from,
+                                                        String cityName) {
+        Intent intent = new Intent(from, MainActivity.class);
+        intent.putExtra(CITY_NAME, cityName);
+        return intent;
+    }
 
     @Override
     public void onCityClicked(City city) {
