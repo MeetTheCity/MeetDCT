@@ -22,7 +22,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".ui.flow.main.view.MainActivity">
+        <activity android:name=".ui.flow.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,6 +32,8 @@
         <activity
             android:name=".ui.flow.city_details.view.CityActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.flow.main.view.MainActivity"/>
     </application>
 
 </manifest>
